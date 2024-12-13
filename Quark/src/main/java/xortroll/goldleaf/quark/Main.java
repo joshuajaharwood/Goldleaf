@@ -23,29 +23,23 @@ package xortroll.goldleaf.quark;
 
 import java.nio.file.Paths;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import xortroll.goldleaf.quark.ui.MainApplication;
 
 public class Main {
-    public static final String ConfigFileOption = "cfgfile";
 
-    public static void main(String[] args) {
-        Options options = new Options();
-        options.addOption(ConfigFileOption, true, "Config file");
-        
-        CommandLineParser parser = new DefaultParser();
-        try {
-            CommandLine cmd = parser.parse(options, args);
-            if(cmd.hasOption(ConfigFileOption)) {
-                Config.ConfigPath = Paths.get(cmd.getOptionValue(ConfigFileOption));
-            }
-        }
-        catch(Exception e) {
-            // TODO
-        }
+  private static final String CONFIG_FILE_OPTION = "cfgfile";
 
-        MainApplication.run(args);
+  public static void main(String[] args) throws ParseException {
+    Options options = new Options().addOption(CONFIG_FILE_OPTION, true, "Config file");
+
+    CommandLine cmd =  new DefaultParser().parse(options, args);
+    if (cmd.hasOption(CONFIG_FILE_OPTION)) {
+      Config.configPath = Paths.get(cmd.getOptionValue(CONFIG_FILE_OPTION));
     }
+    
+    MainApplication.run(args);
+  }
 }

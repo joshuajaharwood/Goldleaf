@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class Buffer {
-    private ByteBuffer buf;
+    private final ByteBuffer buf;
 
     public Buffer(byte[] data) {
         this.buf = ByteBuffer.wrap(data);

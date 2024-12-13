@@ -30,41 +30,41 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Config {
-    public static Path ConfigPath;
-    private Properties inner_cfg;
-    private File cfg_file;
+
+    public static Path configPath;
+    private Properties innerCfg;
+    private File cfgFile;
 
     public Config() throws Exception {
-        if(ConfigPath == null) {
+        if (configPath == null) {
             String configHome = System.getenv("XDG_CONFIG_HOME");
-            if (configHome == null || configHome.trim().length() == 0) {
+            if (configHome == null || configHome.trim().isEmpty()) {
                 configHome = System.getProperty("user.home") + File.separator + ".config";
             }
             Path quarkConfigDirPath = Paths.get(configHome, "quark");
             if (Files.notExists(quarkConfigDirPath)) {
                 Files.createDirectories(quarkConfigDirPath);
             }
-            ConfigPath = quarkConfigDirPath.resolve("quark-config.cfg");
+            configPath = quarkConfigDirPath.resolve("quark-config.cfg");
         }
-        this.inner_cfg = new Properties();
+        this.innerCfg = new Properties();
         reloadConfigFile();
     }
 
     public void reloadConfigFile() throws Exception {
-        this.cfg_file = ConfigPath.toFile();
-        if(this.cfg_file.isFile()) {
-            this.inner_cfg.load(new FileInputStream(this.cfg_file));
-        }
-        else {
-            this.cfg_file.createNewFile();
+        this.cfgFile = configPath.toFile();
+        if (this.cfgFile.isFile()) {
+            this.innerCfg.load(new FileInputStream(this.cfgFile));
+        } else {
+            this.cfgFile.createNewFile();
         }
     }
 
     public void save() throws Exception {
-        this.inner_cfg.store(new FileOutputStream(this.cfg_file), null);
+        this.innerCfg.store(new FileOutputStream(this.cfgFile), null);
     }
 
     public Properties getContent() {
-        return this.inner_cfg;
+        return this.innerCfg;
     }
 }
