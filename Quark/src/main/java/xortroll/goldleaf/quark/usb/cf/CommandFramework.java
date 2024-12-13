@@ -331,56 +331,50 @@ public class CommandFramework {
         }
     });
 
-    public static Command Create = new Command(12, new CommandHandler() {
-        public void handle(CommandBlock block) {
-            String path = FileSystem.denormalizePath(block.readString());
-            int path_type = block.read32();
+    public static Command Create = new Command(12, block -> {
+        String path = FileSystem.denormalizePath(block.readString());
+        int path_type = block.read32();
 
-            Logging.log("[cf] Create(path: '" + path + "', path_type: " + path_type + ")");
+        Logging.log("[cf] Create(path: '" + path + "', path_type: " + path_type + ")");
 
-            try {
-                File f_path = new File(path);
-                if (path_type == PathTypeFile) {
-                    f_path.createNewFile();
-                } else if (path_type == PathTypeDirectory) {
-                    f_path.mkdir();
-                }
-                block.respondEmpty();
-            } catch (Exception e) {
-                block.respondFailure(ResultExceptionCaught);
+        try {
+            File f_path = new File(path);
+            if (path_type == PathTypeFile) {
+                f_path.createNewFile();
+            } else if (path_type == PathTypeDirectory) {
+                f_path.mkdir();
             }
+            block.respondEmpty();
+        } catch (Exception e) {
+            block.respondFailure(ResultExceptionCaught);
         }
     });
 
-    public static Command Delete = new Command(13, new CommandHandler() {
-        public void handle(CommandBlock block) {
-            String path = FileSystem.denormalizePath(block.readString());
+    public static Command Delete = new Command(13, block -> {
+        String path = FileSystem.denormalizePath(block.readString());
 
-            Logging.log("[cf] Delete(path: '" + path + "')");
+        Logging.log("[cf] Delete(path: '" + path + "')");
 
-            try {
-                FileSystem.deletePath(new File(path));
-                block.respondEmpty();
-            } catch (Exception e) {
-                block.respondFailure(ResultExceptionCaught);
-            }
+        try {
+            FileSystem.deletePath(new File(path));
+            block.respondEmpty();
+        } catch (Exception e) {
+            block.respondFailure(ResultExceptionCaught);
         }
     });
 
-    public static Command Rename = new Command(14, new CommandHandler() {
-        public void handle(CommandBlock block) {
-            String path = FileSystem.denormalizePath(block.readString());
-            String new_name = FileSystem.denormalizePath(block.readString());
+    public static Command Rename = new Command(14, block -> {
+        String path = FileSystem.denormalizePath(block.readString());
+        String new_name = FileSystem.denormalizePath(block.readString());
 
-            Logging.log("[cf] Rename(path: '" + path + "', new_name: '" + new_name + "'')");
+        Logging.log("[cf] Rename(path: '" + path + "', new_name: '" + new_name + "'')");
 
-            try {
-                File f_path = new File(path);
-                f_path.renameTo(new File(f_path.getParent(), new_name));
-                block.respondEmpty();
-            } catch (Exception e) {
-                block.respondFailure(ResultExceptionCaught);
-            }
+        try {
+            File f_path = new File(path);
+            f_path.renameTo(new File(f_path.getParent(), new_name));
+            block.respondEmpty();
+        } catch (Exception e) {
+            block.respondFailure(ResultExceptionCaught);
         }
     });
 

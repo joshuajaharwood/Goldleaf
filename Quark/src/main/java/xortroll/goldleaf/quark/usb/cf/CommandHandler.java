@@ -25,5 +25,5 @@ import xortroll.goldleaf.quark.usb.cmd.CommandBlock;
 
 @FunctionalInterface
 public interface CommandHandler {
-    public void handle(CommandBlock block);
+    void handle(CommandBlock block);
 }
